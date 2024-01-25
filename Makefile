@@ -5,3 +5,4 @@ build:
 		-trimpath \
 		-o ./bin/$(BINARY_NAME) \
 		./cmd/$(BINARY_NAME)/main.go
+	
