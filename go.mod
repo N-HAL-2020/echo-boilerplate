@@ -3,8 +3,10 @@ module github.com/N-HAL-2020/echo-boilerplate
 go 1.21.4
 
 require (
+	github.com/golang/mock v1.6.0
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/spf13/viper v1.18.2
+	go.uber.org/mock v0.4.0
 )
 
 require (

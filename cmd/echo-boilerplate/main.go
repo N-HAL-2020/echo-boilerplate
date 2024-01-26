@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/N-HAL-2020/echo-boilerplate/cmd/echo-boilerplate/config"
+	healthcheck "github.com/N-HAL-2020/echo-boilerplate/cmd/echo-boilerplate/handler/health-check"
+	"github.com/N-HAL-2020/echo-boilerplate/cmd/echo-boilerplate/router"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -21,13 +22,20 @@ func run() {
 
 	e := echo.New()
 
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello, World!")
-	})
+	applyMiddleware(e)
+	registerRouter(e)
 
 	address := fmt.Sprintf(":%s", config.Port)
 	e.Logger.Fatal(e.Start(address))
+}
+
+func applyMiddleware(e *echo.Echo) {
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+}
+
+func registerRouter(e *echo.Echo) {
+	healthHandler := healthcheck.NewHandler()
+	healthRouter := router.NewHealthCheckRouter(healthHandler)
+	healthRouter.Register(e)
 }

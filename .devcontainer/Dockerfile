@@ -10,6 +10,7 @@ RUN \
     # install tools
     go install github.com/cosmtrek/air@latest \
     && go install github.com/go-task/task/v3/cmd/task@latest \
+    && go install go.uber.org/mock/mockgen@latest \
     && curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2 \
     # apt
     && apt-get update \

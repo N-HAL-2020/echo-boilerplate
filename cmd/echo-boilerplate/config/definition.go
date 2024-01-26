@@ -13,7 +13,7 @@ type Config struct {
 
 const (
 	configName = "config"
-	configPath = "./cmd/my-app/config"
+	configPath = "./cmd/echo-boilerplate/config"
 	configType = "yaml"
 )
 
