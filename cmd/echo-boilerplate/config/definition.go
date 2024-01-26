@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -18,21 +19,47 @@ const (
 )
 
 func Load() (*Config, error) {
+	setup()
+
+	err := readConfigFile()
+	if err != nil {
+		return nil, err
+	}
+
+	config, err := unmarshalConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	return config, nil
+}
+
+func setup() {
+	viper.SetDefault("port", "8080")
+
 	viper.SetConfigName(configName)
 	viper.AddConfigPath(configPath)
 	viper.SetConfigType(configType)
 
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+}
 
+func readConfigFile() error {
 	err := viper.ReadInConfig()
 	if err != nil {
-		return nil, fmt.Errorf("failed to read config file: %w", err)
+		if !errors.As(err, &viper.ConfigFileNotFoundError{}) {
+			return fmt.Errorf("failed to read config file: %w", err)
+		}
 	}
 
+	return nil
+}
+
+func unmarshalConfig() (*Config, error) {
 	var config Config
 
-	err = viper.Unmarshal(&config)
+	err := viper.Unmarshal(&config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
 	}
