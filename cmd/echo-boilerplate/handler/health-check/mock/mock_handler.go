@@ -5,7 +5,6 @@
 //
 //	mockgen -source=handler.go -destination=mock/mock_handler.go -package=mock
 //
-
 // Package mock is a generated GoMock package.
 package mock
 
